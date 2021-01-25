@@ -1,0 +1,60 @@
+---
+title: "CASA Trends"
+author: "Clancey Barrington"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,comment = "",warning=FALSE,message=FALSE)
+```
+
+
+
+```{r}
+# read in the data
+CASA_SC <- read.csv("CASA.csv")
+```
+
+
+First, we will look at the children in foster care in Santa Cruz and the foster children being served by CASA. What we want to see is the gap between all foster children and oster children being served by CASA to start to close. It look like that gap is starting to close.
+```{r}
+library(tidyverse)
+CASA_SC %>% 
+  ggplot(aes(Year, Children, color = Organization)) +
+  geom_line() +
+  labs(title = "Children in Foster Care vs Children Served: Point-in-time July 1st"
+       , x = "Year", y = "Children") +
+  theme(plot.title=element_text(size=10))
+```
+
+
+Second, we will look at California. For California, it looks like the gap has remained constant.
+```{r}
+State <- read.csv("State_Data.csv")
+
+State %>% 
+  ggplot(aes(Years, Children, color = Organization)) +
+  geom_line() +
+  scale_x_continuous(breaks = 2014:2016) +
+  labs(title = "Children in Foster Care vs Children Served: Fiscal Year"
+       , x = "Year", y = "Children") +
+  theme(plot.title = element_text(size=10)) 
+```
+
+Third, we will look at the national level. We can see in 2014 that gap was starting to close, but CASA went down in 2015. It looks like they are increasing at a similar rate in 2016.
+```{r}
+National <- read.csv("National_Data.csv")
+National$National.Child <- as.integer(National$National.Child)
+
+National %>% 
+  ggplot(aes(Year, National.Child, color = Organization)) +
+  geom_line() +
+  labs(title = "Children in Foster Care vs Children Served: Fiscal Year"
+       , x = "Year", y = "Children") +
+  theme(plot.title=element_text(size=10))
+```
+
+
+
